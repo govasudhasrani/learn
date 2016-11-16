@@ -14,15 +14,16 @@ class Consumer(Thread):
             print "Taking out an element ", str(self.queue.get()), "by ", self.getName()
             self.queue.task_done()
 
-def Producer(Thread):
+class Producer(Thread):
     def __init__(self, queue):
         Thread.__init__(self)
         self.queue = queue
 
     def run(self):
         for i in range(100):
-            self.queue.put(i)
-            print "Inserting an element ", str(i), "by ", self.getName()
+            item = randint(1, 256)
+            self.queue.put(item)
+            print "Inserting an element ", item, "by ", self.getName()
 
 if __name__ == "__main__":
     queue = Queue()
