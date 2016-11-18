@@ -31,6 +31,9 @@ How Queue is thread safe
 
 multiprocessing pipe vs queue
 
+MPI - message passing interface
+
+concurrent.futures
 
 Use cases of semaphore and conditions
 ======================================================================================
