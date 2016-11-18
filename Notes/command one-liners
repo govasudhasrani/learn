@@ -1,0 +1,6 @@
+# 1. Mac command to merge multiple pdf into a single file
+/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py -o output.pdf *.pdf
+
+# 2. To list file in the order of its created time (use option 'r' to reverse the order
+ls -tlr
+
