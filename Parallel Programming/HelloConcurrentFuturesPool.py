@@ -30,7 +30,6 @@ if __name__ == "__main__":
             executor.submit(evaluate_item, args=(i,))
     print("Completed parallel execution with threads taking ", str(time.clock() - start_time), "seconds")
 
-
     start_time = time.clock()
     with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
         for i in test_numbers:

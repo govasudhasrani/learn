@@ -1,0 +1,8 @@
+Pip, setuptools, and wheel have been installed. To update them
+  pip3 install --upgrade pip setuptools wheel
+
+You can install Python packages with
+  pip3 install <package>
+
+They will install into the site-package directory
+  /usr/local/lib/python3.5/site-packages
