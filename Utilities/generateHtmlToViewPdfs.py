@@ -1,6 +1,6 @@
 import sys
 import os
-
+import urllib
 
 def sort_files_based_on_creation_time(directory):
     """
@@ -18,7 +18,7 @@ def sort_files_based_on_creation_time(directory):
 def buildSinglePageView(src_dir, sorted_files):
     objectsHtml = "".join(map(lambda file: "<object width='100%' height='1250px' " \
                                            "type='application/pdf' trusted='yes' " \
-                                           "data='file://{0}#zoom=180&view=Fit'> " \
+                                           "data='file://{0}#zoom=200,200&view=Fit'> " \
                                            "</object>".format(file), sorted_files))
     htmlDoc = '''
                 <!DOCTYPE html>
@@ -36,7 +36,7 @@ def buildSinglePageView(src_dir, sorted_files):
 def buildNavigationalPage(src_dir, sorted_files):
     srcIndexedFiles = [];
     for index in xrange(0, len(sorted_files)):
-        srcIndexedFiles.append(str(index) + ":'" + sorted_files[index] + "'")
+        srcIndexedFiles.append(str(index) + ":'" + urllib.pathname2url(sorted_files[index]) + "'")
     jsFileList = "{" + ",".join(srcIndexedFiles) + "}"
     htmlDoc = '''
 <!DOCTYPE html>
@@ -45,28 +45,33 @@ def buildNavigationalPage(src_dir, sorted_files):
 <label>Index -> </label>
 <input type="text" id="index" size="4"/>
 <button type="button" onclick="goToFile()">GO!</button>
-<button type="button" onclick="goNext()">Next</button>
 <button type="button" onclick="goPrev()">Prev</button>
+<button type="button" onclick="goNext()">Next</button>
 <span id="filename"></span>
 <div id="content" width="100%" height="100%" style='overflow:auto'>
 </div>
-<button type="button" onclick="goNext()">Next</button>
 <button type="button" onclick="goPrev()">Prev</button>
+<button type="button" onclick="goNext()">Next</button>
 </body>
 <script>
 var indexedFiles = ''' + jsFileList + ''';
 var currentIdx = 1;
 
+function positionScroll()
+{
+	document.getElementById("obj").scrollLeft = 300;
+	document.getElementById("content").scrollLeft = 300;
+}
 function showContent(fileIdx)
 {
 	var res = indexedFiles[fileIdx];
     document.getElementById("index").value = fileIdx;
     document.getElementById("filename").innerHTML = res;
     currentIdx = fileIdx;
-	document.getElementById("content").innerHTML = "<object id='obj' width='100%' height='600px' style='overflow:auto' type='application/pdf'" +
-	"trusted='yes'  data='file://" + res + "#zoom=280&view=Fit,100'></object>"
-	document.getElementById("obj").scrollLeft = 300;
-	document.getElementById("content").scrollLeft = 300;
+	document.getElementById("content").innerHTML = "<object id='obj' width='100%' height='600px' " +
+	"onloadeddata='positionScroll()' " +
+	"style='overflow:auto' type='application/pdf' " +
+	"trusted='yes'  data='file://" + res + "#zoom=230,500,200'></object>"
 	document.getElementById("obj").focus();
 }
 
